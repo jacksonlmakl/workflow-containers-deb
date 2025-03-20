@@ -1,0 +1,71 @@
+#!/bin/bash
+
+mkdir -p workflow-containers-1.0/DEBIAN
+mkdir -p workflow-containers-1.0/usr/local/bin
+mkdir -p workflow-containers-1.0/usr/share/workflow-containers
+
+
+
+
+cat > workflow-containers-1.0/DEBIAN/control << 'EOF'
+Package: workflow-containers
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Depends: git, docker.io, docker-compose
+Maintainer: Your Name <your.email@example.com>
+Description: Ubuntu workflow management tool with React and Docker
+ A framework for managing workflows on Ubuntu using React and Docker-in-Docker
+ technology. Simplifies container management and application deployment.
+EOF
+
+cat > workflow-containers-1.0/DEBIAN/postinst << 'EOF'
+#!/bin/bash
+set -e
+
+# Set execution permissions
+chmod +x /usr/local/bin/workflow-containers
+chmod +x /usr/share/workflow-containers/install
+chmod +x /usr/share/workflow-containers/launch
+
+# Run initial setup if needed
+# Uncomment if you want to run installation during package installation
+# /usr/share/workflow-containers/install
+
+echo "workflow-containers has been installed successfully!"
+echo "To start using it, run: workflow-containers"
+
+exit 0
+EOF
+
+chmod 755 workflow-containers-1.0/DEBIAN/postinst
+
+
+
+# Clone your repository to a temporary location
+git clone https://github.com/jacksonlmakl/manager.git temp-manager
+
+# Copy files to the package structure
+cp -r temp-manager/* workflow-containers-1.0/usr/share/workflow-containers/
+
+# Create a launcher script
+cat > workflow-containers-1.0/usr/local/bin/workflow-containers << 'EOF'
+#!/bin/bash
+cd /usr/share/workflow-containers
+./launch "$@"
+EOF
+
+chmod 755 workflow-containers-1.0/usr/local/bin/workflow-containers
+
+# Clean up
+rm -rf temp-manager
+
+
+
+dpkg-deb --build workflow-containers-1.0
+
+
+
+
+

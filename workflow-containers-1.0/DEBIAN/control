@@ -1,0 +1,10 @@
+Package: workflow-containers
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Depends: git, docker.io, docker-compose
+Maintainer: Your Name <your.email@example.com>
+Description: Ubuntu workflow management tool with React and Docker
+ A framework for managing workflows on Ubuntu using React and Docker-in-Docker
+ technology. Simplifies container management and application deployment.

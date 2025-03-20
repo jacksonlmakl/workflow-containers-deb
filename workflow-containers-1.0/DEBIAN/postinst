@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+# Set execution permissions
+chmod +x /usr/local/bin/workflow-containers
+chmod +x /usr/share/workflow-containers/install
+chmod +x /usr/share/workflow-containers/launch
+
+# Run initial setup if needed
+# Uncomment if you want to run installation during package installation
+# /usr/share/workflow-containers/install
+
+echo "workflow-containers has been installed successfully!"
+echo "To start using it, run: workflow-containers"
+
+exit 0
